@@ -1,0 +1,52 @@
+{
+  "size": 10,
+  "track_total_hits": true,
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "multi_match": {
+            "query": "rag \"retrieval-augmented generation\"",
+            "fields": ["title^3", "summary^2", "content", "searchable_content", "author_name"],
+            "type": "most_fields",
+            "boost": 3
+          }
+        },
+        {
+          "multi_match": {
+            "query": "\"multi-agent\" \"multi agents\" multiagent",
+            "fields": ["title^3", "summary^2", "content", "searchable_content", "author_name"],
+            "type": "most_fields",
+            "boost": 2
+          }
+        },
+        {
+          "multi_match": {
+            "query": "\"vision transformer\" vit",
+            "fields": ["title^3", "summary^2", "content", "searchable_content", "author_name"],
+            "type": "most_fields",
+            "boost": 2
+          }
+        },
+        {
+          "terms": {
+            "tags": [
+              "rag",
+              "retrieval-augmented generation",
+              "multi-agent",
+              "multi agents",
+              "multiagent",
+              "vision transformer",
+              "vit"
+            ]
+          }
+        }
+      ],
+      "minimum_should_match": 1
+    }
+  },
+  "sort": [
+    { "_score": "desc" },
+    { "createdTs": { "order": "desc" } }
+  ]
+}

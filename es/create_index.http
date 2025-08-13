@@ -1,0 +1,33 @@
+### Create Users Index
+PUT http://localhost:9200/blog-users
+@users_mapping.json
+
+### Create Articles Index
+PUT http://localhost:9200/blog-articles
+@articles_mapping.json
+
+### Create Users Pipeline
+PUT http://localhost:9200/_ingest/pipeline/blog-users-pipeline
+@users_pipeline.json
+
+### Create Articles Pipeline
+PUT http://localhost:9200/_ingest/pipeline/blog-articles-pipeline
+@articles_pipeline.json
+
+### Check Users Index
+GET http://localhost:9200/blog-users
+
+### Check Articles Index  
+GET http://localhost:9200/blog-articles
+
+### Check Users Pipeline
+GET http://localhost:9200/_ingest/pipeline/blog-users-pipeline
+
+### Check Articles Pipeline
+GET http://localhost:9200/_ingest/pipeline/blog-articles-pipeline
+
+### Delete Users Index (if needed)
+DELETE http://localhost:9200/blog-users
+
+### Delete Articles Index (if needed)
+DELETE http://localhost:9200/blog-articles

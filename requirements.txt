@@ -1,0 +1,12 @@
+# Elasticsearch data loading system requirements
+
+# Core dependencies (required)
+elasticsearch>=8.0.0,<9.0.0
+pydantic
+
+# Optional API dependencies (only needed for --api command)
+# Install with: pip install fastapi uvicorn[standard] openai
+fastapi
+uvicorn[standard]
+openai
+dotenv

@@ -1,0 +1,29 @@
+{
+  "description": "Pipeline for processing article data",
+  "processors": [
+    {
+      "set": {
+        "field": "processed_at",
+        "value": "{{_ingest.timestamp}}"
+      }
+    },
+    {
+      "script": {
+        "description": "Calculate reading time in minutes",
+        "source": "ctx.reading_time_minutes = Math.max(1, Math.round(ctx.content_length / 200.0))"
+      }
+    },
+    {
+      "script": {
+        "description": "Calculate popularity score",
+        "source": "ctx.popularity_score = (ctx.views ?: 0) * 0.1 + (ctx.likes ?: 0) * 2 - (ctx.dislikes ?: 0) * 0.5"
+      }
+    },
+    {
+      "script": {
+        "description": "Set content category based on tags",
+        "source": "def technicalTags = ['python', 'fastapi', 'elasticsearch', 'docker', 'kubernetes']; ctx.is_technical = ctx.tags.stream().anyMatch(tag -> technicalTags.contains(tag))"
+      }
+    }
+  ]
+}

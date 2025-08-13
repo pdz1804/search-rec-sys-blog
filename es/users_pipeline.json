@@ -1,0 +1,23 @@
+{
+  "description": "Pipeline for processing user data",
+  "processors": [
+    {
+      "set": {
+        "field": "processed_at",
+        "value": "{{_ingest.timestamp}}"
+      }
+    },
+    {
+      "script": {
+        "description": "Calculate user engagement metrics",
+        "source": "ctx.user_activity_level = (ctx.total_likes + ctx.total_bookmarks) > 10 ? 'high' : (ctx.total_likes + ctx.total_bookmarks) > 5 ? 'medium' : 'low'"
+      }
+    },
+    {
+      "script": {
+        "description": "Calculate social influence score",
+        "source": "ctx.social_influence = ctx.total_followers * 2 + ctx.total_following"
+      }
+    }
+  ]
+}
