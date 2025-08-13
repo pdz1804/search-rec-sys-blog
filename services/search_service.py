@@ -290,3 +290,5 @@ class SearchService:
         except Exception as e:
             self.logger.error(f"Multi-search failed: {e}")
             raise RuntimeError(f"Multi-search failed: {e}")
+
+

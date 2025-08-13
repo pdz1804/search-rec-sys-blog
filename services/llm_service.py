@@ -138,19 +138,25 @@ class LLMService:
     
     def __init__(self):
         """Initialize the LLM service with Azure OpenAI configuration."""
-        self.logger = get_logger()
-        
-        # Load configuration from environment
+        self._load_config()
+        self._validate_env_vars()
+        self._init_azure_openai_client()
+        self._load_mappings()
+
+    def _load_config(self):
+        """Load configuration from environment variables."""
         self.api_key = os.getenv("AZURE_OPENAI_API_KEY")
         self.endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
         self.api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-15-preview")
         self.deployment = os.getenv("AZURE_OPENAI_COMPLETION_DEPLOYMENT")
-        
-        # Validate configuration
+
+    def _validate_env_vars(self):
+        """Validate environment variables."""
         if not all([self.api_key, self.endpoint, self.deployment]):
             raise ValueError("Missing Azure OpenAI configuration. Please check your .env file.")
-        
-        # Initialize client
+
+    def _init_azure_openai_client(self):
+        """Initialize Azure OpenAI client."""
         try:
             self.client = AzureOpenAI(
                 api_key=self.api_key,
@@ -161,10 +167,12 @@ class LLMService:
         except Exception as e:
             self.logger.error(f"Failed to initialize LLM service: {e}")
             raise
-        
+
+    def _load_mappings(self):
+        """Load mappings from files."""
         mappings_dir = os.getenv("ES_MAPPINGS_DIR", "es")
         self.articles = MappingView.from_file(os.path.join(mappings_dir, "articles_mapping.json"))
-        self.users    = MappingView.from_file(os.path.join(mappings_dir, "users_mapping.json"))
+        self.users = MappingView.from_file(os.path.join(mappings_dir, "users_mapping.json"))
 
     # ---------------- Public API --------------------------------------------
     
